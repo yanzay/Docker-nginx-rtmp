@@ -1,7 +1,7 @@
 FROM alpine:latest
 MAINTAINER Jason Rivers <docker@jasonrivers.co.uk>
 
-ENV NGINX_VERSION 1.9.15
+ENV NGINX_VERSION 1.10.2
 
 RUN	apk update		&&	\
 	apk add				\
@@ -46,21 +46,6 @@ RUN	cd /tmp										&&	\
 		--add-module=../nginx-rtmp-module					&&	\
 	make										&&	\
 	make install
-
-RUN	echo "rtmp {" >> /opt/nginx/conf/nginx.conf					&&	\
-	echo "	server {" >> /opt/nginx/conf/nginx.conf					&&	\
-	echo "		listen 1935;" >> /opt/nginx/conf/nginx.conf			&&	\
-	echo "		chunk_size 4096;" >> /opt/nginx/conf/nginx.conf			&&	\
-	echo "		application live {" >> /opt/nginx/conf/nginx.conf		&&	\
-	echo "			live on;" >> /opt/nginx/conf/nginx.conf			&&	\
-	echo "			record off;" >> /opt/nginx/conf/nginx.conf		&&	\
-	echo "		}" >> /opt/nginx/conf/nginx.conf				&&	\
-	echo "		application testing {" >> /opt/nginx/conf/nginx.conf		&&	\
-	echo "			live on;" >> /opt/nginx/conf/nginx.conf			&&	\
-	echo "			record off;" >> /opt/nginx/conf/nginx.conf		&&	\
-	echo "		}" >> /opt/nginx/conf/nginx.conf				&&	\
-	echo "	}" >> /opt/nginx/conf/nginx.conf					&&	\
-	echo "}" >> /opt/nginx/conf/nginx.conf
 
 RUN	cd /opt/ 	&&	\
 	tar cvzf /tmp/nginx.tar.gz nginx
